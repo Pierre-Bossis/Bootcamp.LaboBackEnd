@@ -1,0 +1,6 @@
+@Bootcamp.LaboBackEnd_HostAddress = http://localhost:5047
+
+GET {{Bootcamp.LaboBackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

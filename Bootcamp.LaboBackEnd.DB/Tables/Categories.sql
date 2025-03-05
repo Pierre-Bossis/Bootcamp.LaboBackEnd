@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Categories]
+(
+	[Id] INT NOT NULL IDENTITY(1,1),
+	[Nom] NVARCHAR(100) NOT NULL,
+
+	CONSTRAINT PK_Categories PRIMARY KEY (Id),
+	CONSTRAINT UQ_Categories_Nom UNIQUE (Nom)
+)

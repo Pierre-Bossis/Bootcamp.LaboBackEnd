@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.LaboBackEnd", "Bootcamp.LaboBackEnd\Bootcamp.LaboBackEnd.csproj", "{2D27A33E-091F-456F-B41A-0153AD32E82D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.LaboBackEnd.BLL", "Bootcamp.LaboBackEnd.BLL\Bootcamp.LaboBackEnd.BLL.csproj", "{475B2CD4-49FE-4100-914E-2C9750AF8160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.LaboBackEnd.DAL", "Bootcamp.LaboBackEnd.DAL\Bootcamp.LaboBackEnd.DAL.csproj", "{297F24CB-F281-43E0-B76A-CC6A72252543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootcamp.LaboBackEnd.Domain", "Bootcamp.LaboBackEnd.Domain\Bootcamp.LaboBackEnd.Domain.csproj", "{B78FFC21-C362-4FE9-931E-44AF09F5DC0B}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Bootcamp.LaboBackEnd.DB", "Bootcamp.LaboBackEnd.DB\Bootcamp.LaboBackEnd.DB.sqlproj", "{130C375C-59F5-4FB9-9027-4CEA49775B15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D27A33E-091F-456F-B41A-0153AD32E82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D27A33E-091F-456F-B41A-0153AD32E82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D27A33E-091F-456F-B41A-0153AD32E82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D27A33E-091F-456F-B41A-0153AD32E82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{475B2CD4-49FE-4100-914E-2C9750AF8160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{475B2CD4-49FE-4100-914E-2C9750AF8160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{475B2CD4-49FE-4100-914E-2C9750AF8160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{475B2CD4-49FE-4100-914E-2C9750AF8160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297F24CB-F281-43E0-B76A-CC6A72252543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297F24CB-F281-43E0-B76A-CC6A72252543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297F24CB-F281-43E0-B76A-CC6A72252543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297F24CB-F281-43E0-B76A-CC6A72252543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78FFC21-C362-4FE9-931E-44AF09F5DC0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78FFC21-C362-4FE9-931E-44AF09F5DC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78FFC21-C362-4FE9-931E-44AF09F5DC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78FFC21-C362-4FE9-931E-44AF09F5DC0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{130C375C-59F5-4FB9-9027-4CEA49775B15}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1A3F9E9-CB74-4B02-99EC-1F7EAFB81F6F}
+	EndGlobalSection
+EndGlobal
