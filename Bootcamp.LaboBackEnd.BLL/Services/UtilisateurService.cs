@@ -1,8 +1,6 @@
 ﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
-using Konscious.Security.Cryptography;
-using System.Text;
 using Isopoh.Cryptography.Argon2;
 
 namespace Bootcamp.LaboBackEnd.BLL.Services;
@@ -18,13 +16,7 @@ public class UtilisateurService : IUtilisateurService
 
     public void Register(Utilisateur utilisateur)
     {
-        using (var hasher = new Argon2id(Encoding.UTF8.GetBytes(utilisateur.PasswordHash)))
-        {
-            hasher.Iterations = 3;
-            hasher.MemorySize = 65536;
-            hasher.DegreeOfParallelism = 2;
-            utilisateur.PasswordHash = Convert.ToBase64String(hasher.GetBytes(32));
-        }
+        utilisateur.PasswordHash = Argon2.Hash(utilisateur.PasswordHash);
 
         _utilisateurRepository.Register(utilisateur);
     }
@@ -35,31 +27,10 @@ public class UtilisateurService : IUtilisateurService
 
         if (storedPasswordHash is null) return null;
 
-        using (var hasher = new Argon2id(Encoding.UTF8.GetBytes(password)))
-        {
-            hasher.Iterations = 3;
-            hasher.MemorySize = 65536;
-            hasher.DegreeOfParallelism = 2;
+        bool verifyPassword = Argon2.Verify(storedPasswordHash, password);
 
-            byte[] computedHash = hasher.GetBytes(32);
+        if (verifyPassword) return _utilisateurRepository.Login(email);
 
-            //si true, faire token
-            if(AreHashesEqual(Convert.FromBase64String(storedPasswordHash), computedHash))
-            {
-                return _utilisateurRepository.Login(email);
-            }
-            return null;
-        }
-    }
-    private bool AreHashesEqual(byte[] storedHash, byte[] computedHash)
-    {
-        if (storedHash.Length != computedHash.Length) return false;
-
-        for (int i = 0; i < storedHash.Length; i++)
-        {
-            if (storedHash[i] != computedHash[i]) return false;
-        }
-
-        return true;
+        return null;
     }
 }
