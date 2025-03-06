@@ -1,4 +1,5 @@
-﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
+using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
 

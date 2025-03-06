@@ -51,7 +51,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
         {
             ConnectedUtilisateurDTO utilisateur = _utilisateurService.Login(form.Email, form.Password).ToDTO();
 
-            if (utilisateur is null) return BadRequest("Email ou Mot de passe invalide.");
+            if (utilisateur.Id == Guid.Empty) return BadRequest("Email ou Mot de passe invalide.");
 
             string token = _jwtGenerator.Generate(utilisateur);
 

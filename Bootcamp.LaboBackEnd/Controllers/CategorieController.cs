@@ -1,11 +1,8 @@
-﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
-using Bootcamp.LaboBackEnd.Domain;
+﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
+using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DTOs.Categorie;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Bootcamp.LaboBackEnd.Controllers
 {

@@ -13,9 +13,9 @@ public class CommandeService : ICommandeService
         _repository = repository;
     }
 
-    public Commande CreateCommande(Commande commande, Guid utilisateurId)
+    public bool CreateCommande(Guid utilisateurId, IEnumerable<Commande_Produit> produits)
     {
-        return _repository.CreateCommande(commande, utilisateurId);
+        return _repository.CreateCommande(utilisateurId, produits);
     }
 
     public IEnumerable<Commande> GetAllCommandes()
