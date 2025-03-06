@@ -6,7 +6,7 @@ public static class UtilisateurMapper
 {
     public static Domain.Utilisateur ToEntity(this RegisterFormUtilisateurDTO dto)
     {
-        if (dto is null) return null;
+        if (dto is null) return new Domain.Utilisateur();
 
         return new Domain.Utilisateur()
         {
@@ -19,7 +19,7 @@ public static class UtilisateurMapper
 
     public static ConnectedUtilisateurDTO ToDTO(this Domain.Utilisateur utilisateur)
     {
-        if (utilisateur is null) return null;
+        if (utilisateur is null) return new ConnectedUtilisateurDTO();
 
         return new ConnectedUtilisateurDTO()
         {

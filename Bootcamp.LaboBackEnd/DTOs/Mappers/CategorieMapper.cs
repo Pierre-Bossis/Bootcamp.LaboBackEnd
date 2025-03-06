@@ -4,9 +4,9 @@ namespace Bootcamp.LaboBackEnd.DTOs.Mappers;
 
 public static class CategorieMapper
 {
-    public static CategorieDTO? ToDTO(this Domain.Categorie categorie)
+    public static CategorieDTO ToDTO(this Domain.Categorie categorie)
     {
-        if (categorie is null) return null;
+        if (categorie is null) return new CategorieDTO();
 
         return new CategorieDTO()
         {

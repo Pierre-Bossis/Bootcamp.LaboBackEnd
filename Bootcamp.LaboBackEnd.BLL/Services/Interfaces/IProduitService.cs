@@ -1,8 +1,8 @@
 ﻿using Bootcamp.LaboBackEnd.Domain;
 
-namespace Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
+namespace Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 
-public interface IProduitRepository
+public interface IProduitService
 {
     IEnumerable<Produit> GetAllProduits();
     Produit? GetProduitById(int id);

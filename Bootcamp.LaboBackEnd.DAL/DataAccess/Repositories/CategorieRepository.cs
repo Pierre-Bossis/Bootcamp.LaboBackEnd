@@ -17,21 +17,24 @@ public class CategorieRepository : ICategorieRepository
     {
         try
         {
-            _connection.Open();
-
-            using (SqlCommand cmd = _connection.CreateCommand())
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
-                cmd.CommandText = "INSERT INTO Categories (Nom) OUTPUT INSERTED.Id VALUES (@Nom)";
-                cmd.Parameters.AddWithValue("@Nom", nom);
 
-                int insertedId = (int)cmd.ExecuteScalar();
-                _connection.Close();
+                connection.Open();
 
-                return new Categorie()
+                using (SqlCommand cmd = connection.CreateCommand())
                 {
-                    Id = insertedId,
-                    Nom = nom
-                };
+                    cmd.CommandText = "INSERT INTO Categories (Nom) OUTPUT INSERTED.Id VALUES (@Nom)";
+                    cmd.Parameters.AddWithValue("@Nom", nom);
+
+                    int insertedId = (int)cmd.ExecuteScalar();
+
+                    return new Categorie()
+                    {
+                        Id = insertedId,
+                        Nom = nom
+                    };
+                }
             }
         }
         catch (Exception ex)
@@ -41,75 +44,82 @@ public class CategorieRepository : ICategorieRepository
     }
     public IEnumerable<Categorie> GetAllCategories()
     {
-        _connection.Open();
-
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "SELECT * FROM Categories";
+            connection.Open();
+            ICollection<Categorie> categories = new List<Categorie>();
 
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            using (SqlCommand cmd = connection.CreateCommand())
             {
-                yield return new Categorie()
+                cmd.CommandText = "SELECT * FROM Categories";
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    Id = (int)reader["Id"],
-                    Nom = (string)reader["Nom"]
-                };
+                    categories.Add(new Categorie()
+                    {
+                        Id = (int)reader["Id"],
+                        Nom = (string)reader["Nom"]
+                    });
+                }
             }
-            _connection.Close();
+            return categories;
         }
     }
     public Categorie? GetCategorieById(int id)
     {
-        _connection.Open();
-
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "SELECT * FROM Categories WHERE Id = @id";
-            cmd.Parameters.AddWithValue("@id", id);
 
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
             {
-                if (reader.Read())
+                cmd.CommandText = "SELECT * FROM Categories WHERE Id = @id";
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    Categorie categorie = new Categorie()
+                    if (reader.Read())
                     {
-                        Id = (int)reader["Id"],
-                        Nom = (string)reader["Nom"]
-                    };
-                    _connection.Close();
-                    return categorie;
-                }
-                _connection.Close();
-                return null;
-            };
+                        Categorie categorie = new Categorie()
+                        {
+                            Id = (int)reader["Id"],
+                            Nom = (string)reader["Nom"]
+                        };
+                        return categorie;
+                    }
+                    return null;
+                };
+            }
         }
     }
 
-    public Categorie GetCategorieByName(string name)
+    public Categorie? GetCategorieByName(string name)
     {
-        _connection.Open();
-
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "SELECT * FROM Categories WHERE Nom = @nom";
-            cmd.Parameters.AddWithValue("@nom", name);
+            connection.Open();
 
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlCommand cmd = connection.CreateCommand())
             {
-                if (reader.Read())
+                cmd.CommandText = "SELECT * FROM Categories WHERE Nom = @nom";
+                cmd.Parameters.AddWithValue("@nom", name);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    Categorie categorie = new()
+                    if (reader.Read())
                     {
-                        Id = (int)reader["Id"],
-                        Nom = (string)reader["Nom"]
-                    };
-                    _connection.Close();
-                    return categorie;
-                }
-                _connection.Close();
-                return null;
-            };
+                        Categorie categorie = new()
+                        {
+                            Id = (int)reader["Id"],
+                            Nom = (string)reader["Nom"]
+                        };
+                        return categorie;
+                    }
+                    return null;
+                };
+            }
         }
     }
 }

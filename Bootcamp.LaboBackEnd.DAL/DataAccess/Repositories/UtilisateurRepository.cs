@@ -16,65 +16,70 @@ public class UtilisateurRepository : IUtilisateurRepository
 
     public string? GetPasswordHashByEmail(string email)
     {
-        string? storedPasswordHash = null;
-
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "SELECT PasswordHash FROM Utilisateurs WHERE Email = @Email";
-            cmd.Parameters.AddWithValue("@Email", email);
+            connection.Open();
+            string? storedPasswordHash = null;
 
-            _connection.Open();
-            var result = cmd.ExecuteScalar();
-            _connection.Close();
-
-            if (result != null)
+            using (SqlCommand cmd = connection.CreateCommand())
             {
-                storedPasswordHash = result.ToString();
+                cmd.CommandText = "SELECT PasswordHash FROM Utilisateurs WHERE Email = @Email";
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                var result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    storedPasswordHash = result.ToString();
+                }
             }
+            return storedPasswordHash;
         }
-        return storedPasswordHash;
     }
 
     public Utilisateur? Login(string email)
     {
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "SELECT Id, IsAdmin, Email FROM Utilisateurs WHERE Email = @Email";
-            cmd.Parameters.AddWithValue("@Email", email);
-
-            _connection.Open();
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            if (reader.Read())
+            connection.Open();
+            using (SqlCommand cmd = connection.CreateCommand())
             {
-                Utilisateur utilisateur = new Utilisateur
+                cmd.CommandText = "SELECT Id, IsAdmin, Email FROM Utilisateurs WHERE Email = @Email";
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
                 {
-                    Id = (Guid)reader["Id"],
-                    IsAdmin = (bool)reader["IsAdmin"],
-                    Email = (string)reader["Email"]
-                };
-                _connection.Close();
-                return utilisateur;
+                    Utilisateur utilisateur = new Utilisateur
+                    {
+                        Id = (Guid)reader["Id"],
+                        IsAdmin = (bool)reader["IsAdmin"],
+                        Email = (string)reader["Email"]
+                    };
+                    return utilisateur;
+                }
+                return null;
             }
-            return null;
         }
     }
 
     public void Register(Utilisateur utilisateur)
     {
-        _connection.Open();
-
-        using (SqlCommand cmd = _connection.CreateCommand())
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
-            cmd.CommandText = "INSERT INTO Utilisateurs (Nom, Prenom, Email, PasswordHash) VALUES (@nom, @prenom, @email, @passwordHash);";
-            cmd.Parameters.AddWithValue("@nom", utilisateur.Nom);
-            cmd.Parameters.AddWithValue("@prenom", utilisateur.Prenom);
-            cmd.Parameters.AddWithValue("@email", utilisateur.Email);
-            cmd.Parameters.AddWithValue("@passwordHash", utilisateur.PasswordHash);
+            connection.Open();
 
-            cmd.ExecuteNonQuery();
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "INSERT INTO Utilisateurs (Nom, Prenom, Email, PasswordHash) VALUES (@nom, @prenom, @email, @passwordHash);";
+                cmd.Parameters.AddWithValue("@nom", utilisateur.Nom);
+                cmd.Parameters.AddWithValue("@prenom", utilisateur.Prenom);
+                cmd.Parameters.AddWithValue("@email", utilisateur.Email);
+                cmd.Parameters.AddWithValue("@passwordHash", utilisateur.PasswordHash);
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
-
-
 }

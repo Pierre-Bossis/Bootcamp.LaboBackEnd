@@ -20,23 +20,6 @@ namespace Bootcamp.LaboBackEnd.Controllers
             _Service = service;
         }
 
-        [HttpGet("getjwt")]
-        public IActionResult GetJwt()
-        {
-            string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (User.Identity.IsAuthenticated)
-            {
-                var userId = User.FindFirst(ClaimTypes.Sid)?.Value;
-                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            }
-            else
-            {
-                return Unauthorized("Vous devez être authentifié.");
-            }
-            return Ok(token);
-        }
-
-        [Authorize(Policy = "adminPolicy")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -50,7 +33,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
         {
             CategorieDTO? categorie = _Service.GetCategorieById(id).ToDTO();
 
-            if (categorie == null) return NotFound();
+            if (categorie.Id == 0) return NotFound();
 
             return Ok(categorie);
         }
@@ -60,18 +43,20 @@ namespace Bootcamp.LaboBackEnd.Controllers
         {
             CategorieDTO categorie = _Service.GetCategorieByName(name).ToDTO();
 
-            if (categorie is null) return NotFound();
+            if (categorie.Id == 0) return NotFound();
 
             return Ok(categorie);
         }
 
 
         [HttpPost]
-        public IActionResult CreateCategorie(string nom)
+        public IActionResult CreateCategorie([FromBody] CreateFormCategorieDTO dto)
         {
-            CategorieDTO cat = _Service.AddCategorie(nom).ToDTO();
+            if (!ModelState.IsValid) return BadRequest("Elements non valides.");
 
-            return Ok(cat);
+            CategorieDTO categorieDTO = _Service.AddCategorie(dto.Nom).ToDTO();
+
+            return Ok(categorieDTO);
         }
     }
 }
