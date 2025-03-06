@@ -33,8 +33,8 @@ public class ProduitService : IProduitService
         return _Repository.GetProduitById(id);
     }
 
-    public Produit UpdateProduit(Produit produit)
+    public Produit UpdateProduit(int id, Produit produit)
     {
-        return _Repository.UpdateProduit(produit);
+        return _Repository.UpdateProduit(id, produit);
     }
 }

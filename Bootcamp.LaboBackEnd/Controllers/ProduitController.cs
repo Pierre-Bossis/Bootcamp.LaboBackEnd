@@ -39,13 +39,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            //charger toutes les catégories pour les mapper dans les dto
-            Dictionary<int, CategorieDTO> categories = _categorieService.GetAllCategories()
-                    .ToDictionary(c => c.Id, c => c.ToDTO());
-
-            //récupérer tous les produits et les mapper avec les catégories
-            IEnumerable<ProduitDTO> produits = _produitService.GetAllProduits()
-                                .Select(p => p.ToDtoFull(categories[p.CategorieId]));
+            IEnumerable<ListProduitDTO> produits = _produitService.GetAllProduits().Select(p => p.ToListDTO());
 
             return Ok(produits);
         }
@@ -76,11 +70,17 @@ namespace Bootcamp.LaboBackEnd.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody]  Produit produit)
+        public IActionResult Update([FromRoute] int id, [FromBody]  UpdateFormProduitDTO form)
         {
-            if (!ModelState.IsValid) return BadRequest("Elements non valides.");
+            if (!ModelState.IsValid || form.Id != id) return BadRequest("Elements non valides.");
 
-            return Ok();
+            Produit updatedProduit = _produitService.UpdateProduit(id, form.ToEntityUpdate());
+            Categorie? categorie =  _categorieService.GetCategorieById(updatedProduit.CategorieId);
+            if (categorie is null) return BadRequest("Erreur lors de la récupération de la catégorie.");
+
+            ProduitDTO produitDTO = updatedProduit.ToDtoFull(categorie.ToDTO());
+
+            return Ok(produitDTO);
         }
     }
 }

@@ -7,6 +7,6 @@ public interface IProduitRepository
     IEnumerable<Produit> GetAllProduits();
     Produit? GetProduitById(int id);
     Produit AddProduit(Produit produit);
-    Produit UpdateProduit(Produit produit);
+    Produit UpdateProduit(int id, Produit produit);
     bool DeleteProduit(int id);
 }

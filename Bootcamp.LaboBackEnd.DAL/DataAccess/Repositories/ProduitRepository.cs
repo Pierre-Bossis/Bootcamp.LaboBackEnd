@@ -121,8 +121,28 @@ public class ProduitRepository : IProduitRepository
         }
     }
 
-    public Produit UpdateProduit(Produit produit)
+    public Produit UpdateProduit(int id, Produit produit)
     {
-        throw new NotImplementedException();
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "UPDATE Produits SET Nom = @Nom, Description = @Description, Prix = @Prix, Quantite = @Quantite, CategorieId = @CategorieId WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Nom", produit.Nom);
+                cmd.Parameters.AddWithValue("@Description", produit.Description);
+                cmd.Parameters.AddWithValue("@Prix", produit.Prix);
+                cmd.Parameters.AddWithValue("@Quantite", produit.Quantite);
+                cmd.Parameters.AddWithValue("@CategorieId", produit.CategorieId);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected == 1) return produit;
+
+                throw new Exception("Problème lors de la mise à jour");
+            }
+        }
     }
 }
