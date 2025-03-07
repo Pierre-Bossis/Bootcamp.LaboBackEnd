@@ -10,4 +10,5 @@ public class Produit
     public int Quantite { get; set; }
     public string Description { get; set; }
     public int CategorieId { get; set; }
+    public Categorie Categorie { get; set; }
 }

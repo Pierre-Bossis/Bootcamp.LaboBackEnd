@@ -1,5 +1,7 @@
 ﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
+using Bootcamp.LaboBackEnd.DTOs.Commande;
+using Bootcamp.LaboBackEnd.DTOs.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,11 +13,21 @@ namespace Bootcamp.LaboBackEnd.Controllers
     public class CommandeController : ControllerBase
     {
         private readonly ICommandeService _commandeService;
+        private readonly IProduitService _produitService;
         //commandes_produitsService ??
 
         public CommandeController(ICommandeService commandeService)
         {
             _commandeService = commandeService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllCommandes()
+        {
+            IEnumerable<GetCommandeDTO> commandes =  _commandeService.GetAllCommandes().Select(c => c.ToCommandeDTO());
+
+
+            return Ok(commandes);
         }
 
         [HttpPost("create-commande")]

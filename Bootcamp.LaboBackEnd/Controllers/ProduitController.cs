@@ -30,7 +30,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             if (categorieDTO is null) return BadRequest("La catégorie n'existe pas.");
 
             //créé le produit et retourne l'entitée créée avec les informations complètes de la catégorie
-            ProduitDTO createdProduct = _produitService.AddProduit(dto.ToEntity()).ToDtoFull(categorieDTO);
+            ProduitDTO createdProduct = _produitService.AddProduit(dto.ToEntity()).ToDtoFull();
             if (createdProduct is null) return BadRequest("Erreur lors de la création du produit.");
 
             return Ok(createdProduct);
@@ -54,7 +54,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             if (categorie is null) return NotFound($"Catégorie avec l'ID {produit.CategorieId} non trouvée.");
 
             CategorieDTO categorieDTO = categorie.ToDTO();
-            ProduitDTO produitDTO = produit.ToDtoFull(categorieDTO);
+            ProduitDTO produitDTO = produit.ToDtoFull();
 
             return Ok(produitDTO);
         }
@@ -78,7 +78,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             Categorie? categorie =  _categorieService.GetCategorieById(updatedProduit.CategorieId);
             if (categorie is null) return BadRequest("Erreur lors de la récupération de la catégorie.");
 
-            ProduitDTO produitDTO = updatedProduit.ToDtoFull(categorie.ToDTO());
+            ProduitDTO produitDTO = updatedProduit.ToDtoFull();
 
             return Ok(produitDTO);
         }

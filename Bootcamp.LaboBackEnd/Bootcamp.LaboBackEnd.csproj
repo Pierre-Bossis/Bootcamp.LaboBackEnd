@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Bootcamp.LaboBackEnd.Domain\Bootcamp.LaboBackEnd.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Commande\" />
-  </ItemGroup>
-
 </Project>

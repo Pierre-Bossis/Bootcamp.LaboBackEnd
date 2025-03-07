@@ -98,7 +98,14 @@ public class ProduitRepository : IProduitRepository
 
             using (SqlCommand cmd = connection.CreateCommand())
             {
-                cmd.CommandText = "SELECT Id, Nom, Description, Prix, Quantite, CategorieId FROM Produits WHERE Id = @Id";
+                cmd.CommandText = @"
+                SELECT 
+                    p.Id, p.Nom, p.Description, p.Prix, p.Quantite, p.CategorieId,
+                    c.Id AS CategorieId, c.Nom AS CategorieNom
+                FROM Produits p
+                INNER JOIN Categories c ON p.CategorieId = c.Id
+                WHERE p.Id = @Id";
+
                 cmd.Parameters.AddWithValue("@Id", id);
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -112,7 +119,12 @@ public class ProduitRepository : IProduitRepository
                             Description = reader.GetString(2),
                             Prix = reader.GetDecimal(3),
                             Quantite = reader.GetInt32(4),
-                            CategorieId = reader.GetInt32(5)
+                            CategorieId = reader.GetInt32(5),
+                            Categorie = new Categorie
+                            {
+                                Id = reader.GetInt32(6),
+                                Nom = reader.GetString(7)
+                            }
                         };
                     }
                     return null;

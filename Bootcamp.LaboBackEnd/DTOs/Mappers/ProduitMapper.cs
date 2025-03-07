@@ -19,9 +19,9 @@ public static class ProduitMapper
         };
     }
 
-    public static ProduitDTO ToDtoFull(this Domain.Produit entity, CategorieDTO categorieDTO)
+    public static ProduitDTO ToDtoFull(this Domain.Produit entity)
     {
-        if (entity is null || categorieDTO is null) return new ProduitDTO();
+        if (entity is null) return new ProduitDTO();
 
         return new ProduitDTO
         {
@@ -30,7 +30,7 @@ public static class ProduitMapper
             Description = entity.Description,
             Prix = entity.Prix,
             Quantite = entity.Quantite,
-            Categorie = categorieDTO
+            Categorie = entity.Categorie.ToDTO()
         };
     }
 
@@ -58,6 +58,7 @@ public static class ProduitMapper
             Id = entity.Id,
             Nom = entity.Nom,
             Prix = entity.Prix,
+            categorie = entity.Categorie.ToDTO()
         };
     }
 }
