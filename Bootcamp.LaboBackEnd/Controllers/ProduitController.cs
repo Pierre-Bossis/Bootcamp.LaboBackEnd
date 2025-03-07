@@ -36,6 +36,25 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(createdProduct);
         }
 
+        [HttpGet("categorie/id/{id}")]
+        public IActionResult GetByCategorieId([FromRoute] int id)
+        {
+            IEnumerable<ListProduitDTO> produits = _produitService.GetProduitsByCategorieId(id).Select(p => p.ToListDTO());
+            if (!produits.Any()) return NotFound("Aucun produits trouvé.");
+
+            return Ok(produits);
+        }
+
+        [HttpGet("categorie/nom/{nom}")]
+        public IActionResult GetByCategorieName([FromRoute] string nom)
+        {
+            IEnumerable<ListProduitDTO> produits = _produitService.GetProduitsByCategorieName(nom).Select(p => p.ToListDTO());
+            if (!produits.Any()) return NotFound("Aucun produits trouvé.");
+
+            return Ok(produits);
+        }
+
+
         [HttpGet]
         public IActionResult GetAllProducts()
         {
@@ -70,12 +89,12 @@ namespace Bootcamp.LaboBackEnd.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody]  UpdateFormProduitDTO form)
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateFormProduitDTO form)
         {
             if (!ModelState.IsValid || form.Id != id) return BadRequest("Elements non valides.");
 
             Produit updatedProduit = _produitService.UpdateProduit(id, form.ToEntityUpdate());
-            Categorie? categorie =  _categorieService.GetCategorieById(updatedProduit.CategorieId);
+            Categorie? categorie = _categorieService.GetCategorieById(updatedProduit.CategorieId);
             if (categorie is null) return BadRequest("Erreur lors de la récupération de la catégorie.");
 
             ProduitDTO produitDTO = updatedProduit.ToDtoFull();

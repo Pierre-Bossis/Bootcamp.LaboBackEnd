@@ -133,6 +133,92 @@ public class ProduitRepository : IProduitRepository
         }
     }
 
+    public IEnumerable<Produit> GetProduitsByCategorieId(int categorieId)
+    {
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+            ICollection<Produit> produits = new List<Produit>();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = @"
+                SELECT p.Id, p.Nom, p.Description, p.Prix, p.Quantite, p.CategorieId, 
+                       c.Nom AS CategorieNom 
+                FROM Produits p
+                INNER JOIN Categories c ON p.CategorieId = c.Id
+                WHERE p.CategorieId = @CategorieId";
+
+                cmd.Parameters.AddWithValue("@CategorieId", categorieId);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        produits.Add(new Produit
+                        {
+                            Id = reader.GetInt32(0),
+                            Nom = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            Prix = reader.GetDecimal(3),
+                            Quantite = reader.GetInt32(4),
+                            CategorieId = reader.GetInt32(5),
+                            Categorie = new Categorie
+                            {
+                                Id = categorieId,
+                                Nom = reader.GetString(reader.GetOrdinal("CategorieNom"))
+                            }
+                        });
+                    }
+                }
+            }
+            return produits;
+        }
+    }
+    public IEnumerable<Produit> GetProduitsByCategorieName(string nom)
+    {
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+            ICollection<Produit> produits = new List<Produit>();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = @"
+                SELECT p.Id, p.Nom, p.Description, p.Prix, p.Quantite, p.CategorieId, 
+                       c.Nom AS CategorieNom 
+                FROM Produits p
+                INNER JOIN Categories c ON p.CategorieId = c.Id
+                WHERE c.Nom = @Nom";
+
+                cmd.Parameters.AddWithValue("@Nom", nom);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        produits.Add(new Produit
+                        {
+                            Id = reader.GetInt32(0),
+                            Nom = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            Prix = reader.GetDecimal(3),
+                            Quantite = reader.GetInt32(4),
+                            CategorieId = reader.GetInt32(5),
+                            Categorie = new Categorie
+                            {
+                                Id = reader.GetInt32(5),
+                                Nom = reader.GetString(reader.GetOrdinal("CategorieNom"))
+                            }
+                        });
+                    }
+                }
+            }
+            return produits;
+        }
+    }
+
+
     public Produit UpdateProduit(int id, Produit produit)
     {
         using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))

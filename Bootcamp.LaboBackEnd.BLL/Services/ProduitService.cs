@@ -33,6 +33,15 @@ public class ProduitService : IProduitService
         return _Repository.GetProduitById(id);
     }
 
+    public IEnumerable<Produit> GetProduitsByCategorieId(int categorieId)
+    {
+        return _Repository.GetProduitsByCategorieId(categorieId);
+    }
+    public IEnumerable<Produit> GetProduitsByCategorieName(string nom)
+    {
+        return _Repository.GetProduitsByCategorieName(nom);
+    }
+
     public Produit UpdateProduit(int id, Produit produit)
     {
         return _Repository.UpdateProduit(id, produit);
