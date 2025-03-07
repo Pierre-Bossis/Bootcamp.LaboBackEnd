@@ -127,10 +127,43 @@ public class CommandeRepository : ICommandeRepository
             }
         }
     }
-
-
     public Commande UpdateStateCommande(int id, int stateId)
     {
-        throw new NotImplementedException();
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                // Mise à jour de l'état de la commande
+                cmd.CommandText = "UPDATE Commandes SET EtatId = @stateId WHERE Id = @id";
+                cmd.Parameters.AddWithValue("@stateId", stateId);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT Id, EtatId, UtilisateurId, Date FROM Commandes WHERE Id = @id";
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Commande
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            EtatId = reader.GetInt32(reader.GetOrdinal("EtatId")),
+                            UtilisateurId = reader.GetGuid(reader.GetOrdinal("UtilisateurId")),
+                            Date = reader.GetDateTime(reader.GetOrdinal("Date"))
+                        };
+                    }
+                }
+            }
+        }
+        throw new Exception("Problème lors de la mise à jour.");
     }
+
 }

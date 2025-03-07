@@ -15,4 +15,17 @@ public static class CommandeMapper
             Produits = commande.Produits.Select(p => p.ToListDTO())
         };
     }
+
+    public static GetSummaryCommandeDto ToSummaryCommandeDTO(this Domain.Commande commande)
+    {
+        if (commande is null) return new GetSummaryCommandeDto();
+
+        return new GetSummaryCommandeDto
+        {
+            Id = commande.Id,
+            Date = commande.Date,
+            EtatId = commande.EtatId,
+            UtilisateurId = commande.UtilisateurId
+        };
+    }
 }

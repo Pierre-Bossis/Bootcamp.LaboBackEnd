@@ -13,8 +13,6 @@ namespace Bootcamp.LaboBackEnd.Controllers
     public class CommandeController : ControllerBase
     {
         private readonly ICommandeService _commandeService;
-        private readonly IProduitService _produitService;
-        //commandes_produitsService ??
 
         public CommandeController(ICommandeService commandeService)
         {
@@ -36,13 +34,21 @@ namespace Bootcamp.LaboBackEnd.Controllers
             Guid? userId = GetCurrentUserId();
             if (userId is null) return Unauthorized("Utilisateur non authentifié.");
 
-            //envoyer la commande commandeService
-            //envoyer les refs dans la table intermediaire commande_produitService
             bool success = _commandeService.CreateCommande(userId.Value, commande_produit);
 
             if(!success) return BadRequest("Erreur lors de la création de la commande.");
 
             return Ok("Commande passée.");
+        }
+
+        [HttpPut("update-state/{id}")]
+        public IActionResult updateState([FromRoute] int id, [FromBody] int stateId)
+        {
+            GetSummaryCommandeDto dto = _commandeService.UpdateStateCommande(id, stateId).ToSummaryCommandeDTO();
+
+            if(dto.Id == 0) return NotFound("Commande non trouvée.");
+
+            return Ok(dto);
         }
 
         private Guid? GetCurrentUserId()
