@@ -97,7 +97,7 @@ public class CommandeRepository : ICommandeRepository
                                 EtatId = reader.GetInt32(reader.GetOrdinal("EtatId")),
                                 UtilisateurId = reader.GetGuid(reader.GetOrdinal("UtilisateurId")),
                                 Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                                Produits = new List<Produit>() // Initialisation de la liste des produits
+                                Produits = new List<Produit>()
                             };
                             commandeDict[commandeId] = commande;
                         }

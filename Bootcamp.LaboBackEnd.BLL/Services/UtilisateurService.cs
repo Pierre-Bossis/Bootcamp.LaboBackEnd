@@ -33,4 +33,9 @@ public class UtilisateurService : IUtilisateurService
 
         return null;
     }
+
+    public IEnumerable<Commande> historiqueCommandesByUtilisteurId(Guid utilisateurId)
+    {
+        return _utilisateurRepository.HistoriqueCommandesByUtilisteurId(utilisateurId);
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+using Bootcamp.LaboBackEnd.DTOs.Commande;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
 using Bootcamp.LaboBackEnd.DTOs.Utilisateur;
 using Bootcamp.LaboBackEnd.Tools;
@@ -56,6 +57,15 @@ namespace Bootcamp.LaboBackEnd.Controllers
             string token = _jwtGenerator.Generate(utilisateur);
 
             return Ok(token);
+        }
+
+        [HttpGet("getcommandes/{utilisateurId}")]
+        public IActionResult historiqueCommandesByUtilisteurId(Guid utilisateurId)
+        {
+            IEnumerable<GetCommandeDTO> commandes = _utilisateurService.historiqueCommandesByUtilisteurId(utilisateurId).Select(c => c.ToCommandeDTO());
+            if (!commandes.Any()) return Ok("Aucune commande n'existe pour cet utilisateur.");
+
+            return Ok(commandes);
         }
     }
 }
