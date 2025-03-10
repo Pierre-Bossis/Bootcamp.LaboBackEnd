@@ -17,7 +17,7 @@ public class UtilisateurRepository : IUtilisateurRepository
     public bool IsEmailAlreadyExists(string email)
     {
         using (SqlConnection connection = new SqlConnection(_connection.ConnectionString)){
-            _connection.Open();
+            connection.Open();
 
             using (SqlCommand cmd = connection.CreateCommand())
             {
