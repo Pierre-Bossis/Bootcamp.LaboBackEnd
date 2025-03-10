@@ -14,8 +14,13 @@ public class CategorieService : ICategorieService
         _Repository = repository;
     }
 
-    public Categorie AddCategorie(string categorie)
+    public Categorie? AddCategorie(string categorie)
     {
+        categorie = categorie.Substring(0, 1).ToUpper() + categorie.Substring(1).ToLower();
+        bool CategorieNameExists = _Repository.IsCategorieNameExists(categorie);
+
+        if (CategorieNameExists) return null;
+
         return _Repository.AddCategorie(categorie);
     }
 

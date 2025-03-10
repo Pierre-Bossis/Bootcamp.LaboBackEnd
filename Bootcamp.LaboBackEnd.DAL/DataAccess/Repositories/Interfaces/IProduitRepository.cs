@@ -46,4 +46,10 @@ public interface IProduitRepository
     /// <param name="nom"></param>
     /// <returns></returns>
     IEnumerable<Produit> GetProduitsByCategorieName(string nom);
+    /// <summary>
+    /// Vérifie si le nom du produit est déjà utilisé.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    bool IsProduitNameExists(string name);
 }

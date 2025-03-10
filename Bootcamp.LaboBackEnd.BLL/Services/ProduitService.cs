@@ -13,8 +13,11 @@ public class ProduitService : IProduitService
         _Repository = produitRepository;
     }
 
-    public Produit AddProduit(Produit produit)
+    public Produit? AddProduit(Produit produit)
     {
+        bool produitNameExists = _Repository.IsProduitNameExists(produit.Nom);
+        if (produitNameExists) return null;
+
         return _Repository.AddProduit(produit);
     }
 

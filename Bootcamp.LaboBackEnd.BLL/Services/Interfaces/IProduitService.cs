@@ -16,11 +16,11 @@ public interface IProduitService
     /// <returns></returns>
     Produit? GetProduitById(int id);
     /// <summary>
-    /// Ajouter un produit.
+    /// Ajouter un produit ou retourne null si le nom existe déjà.
     /// </summary>
     /// <param name="produit"></param>
     /// <returns></returns>
-    Produit AddProduit(Produit produit);
+    Produit? AddProduit(Produit produit);
     /// <summary>
     /// Mettre à jour un produit.
     /// </summary>

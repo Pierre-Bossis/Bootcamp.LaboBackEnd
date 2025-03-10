@@ -8,5 +8,6 @@
 	[CategorieId] INT NOT NULL,
 
 	CONSTRAINT PK_Produits PRIMARY KEY (Id),
+	CONSTRAINT UQ_Produits_Nom UNIQUE (Nom),
 	FOREIGN KEY ([CategorieId]) REFERENCES [dbo].[Categories]([Id])
 )

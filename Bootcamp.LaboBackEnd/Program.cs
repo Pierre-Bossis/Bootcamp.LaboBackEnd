@@ -18,7 +18,8 @@ builder.Services.AddSwaggerGen();
 
 #region Dependency Injection
 
-builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("Technofutur")));
 builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 builder.Services.AddScoped<IUtilisateurService, UtilisateurService>();
 

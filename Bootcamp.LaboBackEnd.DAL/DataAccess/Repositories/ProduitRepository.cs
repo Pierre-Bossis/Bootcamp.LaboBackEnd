@@ -13,6 +13,24 @@ public class ProduitRepository : IProduitRepository
         _connection = connection;
     }
 
+    public bool IsProduitNameExists(string name)
+    {
+        using (SqlConnection connection = new(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using(SqlCommand cmd =  connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM Produits WHERE Nom = @Nom";
+                cmd.Parameters.AddWithValue("@Nom", name);
+
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+    }
+
     public Produit AddProduit(Produit produit)
     {
         using (SqlConnection connection = new(_connection.ConnectionString))
@@ -217,7 +235,6 @@ public class ProduitRepository : IProduitRepository
             return produits;
         }
     }
-
 
     public Produit UpdateProduit(int id, Produit produit)
     {

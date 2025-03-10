@@ -8,4 +8,5 @@ public interface ICategorieRepository
     Categorie? GetCategorieById(int id);
     Categorie? GetCategorieByName(string name);
     Categorie AddCategorie(string categorie);
+    bool IsCategorieNameExists(string name);
 }

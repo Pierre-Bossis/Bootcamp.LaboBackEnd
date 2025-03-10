@@ -25,6 +25,7 @@ public class ExceptionMiddleware
             switch (ex)
             {
                 case EmailAlreadyExistsException:
+                case NameCategorieAlreadyExistsException:
                 case InvalidLoginException:
                     // 400 - erreur de la part de l'utilisateur (de mauvaise donnée lors de l'input)
                     context.Response.StatusCode = 400;

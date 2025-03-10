@@ -13,6 +13,24 @@ public class CategorieRepository : ICategorieRepository
         _connection = connection;
     }
 
+    public bool IsCategorieNameExists(string name)
+    {
+        using(SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using(SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM Categories WHERE Nom = @Nom";
+                cmd.Parameters.AddWithValue("@Nom", name);
+
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+    }
+
     public Categorie AddCategorie(string nom)
     {
         try

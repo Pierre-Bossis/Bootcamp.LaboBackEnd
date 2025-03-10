@@ -1,7 +1,8 @@
-﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
-using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+using Bootcamp.LaboBackEnd.Domain;
 using Bootcamp.LaboBackEnd.DTOs.Categorie;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bootcamp.LaboBackEnd.Controllers
@@ -45,13 +46,15 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(categorie);
         }
 
-
+        [Authorize(Policy = "adminPolicy")]
         [HttpPost]
         public IActionResult CreateCategorie([FromBody] CreateFormCategorieDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest("Elements non valides.");
 
-            CategorieDTO categorieDTO = _Service.AddCategorie(dto.Nom).ToDTO();
+            Categorie? categorie = _Service.AddCategorie(dto.Nom);
+            if (categorie is null) return Conflict("La catégorie existe déjà.");
+            CategorieDTO categorieDTO = categorie.ToDTO();
 
             return Ok(categorieDTO);
         }
