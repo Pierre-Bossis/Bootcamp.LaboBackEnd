@@ -1,4 +1,5 @@
-﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
+using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
 using Isopoh.Cryptography.Argon2;
@@ -14,11 +15,15 @@ public class UtilisateurService : IUtilisateurService
         _utilisateurRepository = utilisateurRepository;
     }
 
-    public void Register(Utilisateur utilisateur)
+    public bool Register(Utilisateur utilisateur)
     {
+        bool emailExists = _utilisateurRepository.IsEmailAlreadyExists(utilisateur.Email);
+        //if (emailExists) throw new EmailAlreadyExistsException();
+        if (emailExists) return false;
+
         utilisateur.PasswordHash = Argon2.Hash(utilisateur.PasswordHash);
 
-        _utilisateurRepository.Register(utilisateur);
+        return _utilisateurRepository.Register(utilisateur);
     }
 
     public Utilisateur? Login(string email, string password)

@@ -8,7 +8,7 @@ public interface IUtilisateurRepository
     /// Créer un utilisateur.
     /// </summary>
     /// <param name="utilisateur"></param>
-    void Register(Utilisateur utilisateur);
+    bool Register(Utilisateur utilisateur);
     /// <summary>
     /// Se connecter à un compte utilisateur.
     /// </summary>
@@ -27,4 +27,10 @@ public interface IUtilisateurRepository
     /// <param name="utilisateurId"></param>
     /// <returns></returns>
     IEnumerable<Commande> HistoriqueCommandesByUtilisteurId(Guid utilisateurId);
+    /// <summary>
+    /// Vérifie si l'email existe déjà dans la base de donnée.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    bool IsEmailAlreadyExists(string email);
 }

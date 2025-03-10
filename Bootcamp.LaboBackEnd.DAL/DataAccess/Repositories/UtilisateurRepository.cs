@@ -14,6 +14,23 @@ public class UtilisateurRepository : IUtilisateurRepository
         _connection = connection;
     }
 
+    public bool IsEmailAlreadyExists(string email)
+    {
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString)){
+            _connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM Utilisateurs WHERE Email = @Email";
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+    }
+
     public string? GetPasswordHashByEmail(string email)
     {
         using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
@@ -64,7 +81,7 @@ public class UtilisateurRepository : IUtilisateurRepository
         }
     }
 
-    public void Register(Utilisateur utilisateur)
+    public bool Register(Utilisateur utilisateur)
     {
         using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
         {
@@ -78,7 +95,9 @@ public class UtilisateurRepository : IUtilisateurRepository
                 cmd.Parameters.AddWithValue("@email", utilisateur.Email);
                 cmd.Parameters.AddWithValue("@passwordHash", utilisateur.PasswordHash);
 
-                cmd.ExecuteNonQuery();
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                return rowsAffected > 0;
             }
         }
     }
@@ -158,5 +177,4 @@ public class UtilisateurRepository : IUtilisateurRepository
             return commandesDict.Values;
         }
     }
-
 }
