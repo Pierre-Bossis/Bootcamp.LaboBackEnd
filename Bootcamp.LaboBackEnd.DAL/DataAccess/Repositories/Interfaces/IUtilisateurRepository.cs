@@ -33,4 +33,11 @@ public interface IUtilisateurRepository
     /// <param name="email"></param>
     /// <returns></returns>
     bool IsEmailAlreadyExists(string email);
+    /// <summary>
+    /// Mettre à jour les informations utilisateur.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="utilisateur"></param>
+    /// <returns></returns>
+    Utilisateur Update(Guid id, Utilisateur utilisateur);
 }

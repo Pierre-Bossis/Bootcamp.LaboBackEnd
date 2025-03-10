@@ -16,7 +16,8 @@ public class UtilisateurRepository : IUtilisateurRepository
 
     public bool IsEmailAlreadyExists(string email)
     {
-        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString)){
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
             connection.Open();
 
             using (SqlCommand cmd = connection.CreateCommand())
@@ -175,6 +176,46 @@ public class UtilisateurRepository : IUtilisateurRepository
                 }
             }
             return commandesDict.Values;
+        }
+    }
+
+    public Utilisateur Update(Guid id, Utilisateur utilisateur)
+    {
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "UPDATE Utilisateurs SET Nom = @Nom, Prenom = @Prenom Where Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Nom", utilisateur.Nom);
+                cmd.Parameters.AddWithValue("@Prenom", utilisateur.Prenom);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    cmd.CommandText = "SELECT Id, IsAdmin, Email, Nom, Prenom FROM Utilisateurs WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@Email", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Utilisateur u = new Utilisateur
+                        {
+                            Id = (Guid)reader["Id"],
+                            IsAdmin = (bool)reader["IsAdmin"],
+                            Email = (string)reader["Email"],
+                            Nom = (string)reader["Nom"],
+                            Prenom = (string)reader["Prenom"]
+                        };
+                        return u;
+                    }
+                }
+                throw new Exception("Erreur lors de l'update");
+            }
         }
     }
 }

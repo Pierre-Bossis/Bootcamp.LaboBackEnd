@@ -25,7 +25,21 @@ public static class UtilisateurMapper
         {
             Id = utilisateur.Id,
             Email = utilisateur.Email,
+            Nom = utilisateur.Nom,
+            Prenom = utilisateur.Prenom,
             IsAdmin = utilisateur.IsAdmin
+        };
+    }
+
+    public static Domain.Utilisateur ToUpdateEntity(this UpdateFormUtilisateurDTO dto)
+    {
+        if (dto is null) return new Domain.Utilisateur();
+
+        return new Domain.Utilisateur()
+        {
+            Id = dto.Id,
+            Nom = dto.Nom,
+            Prenom = dto.Prenom
         };
     }
 }

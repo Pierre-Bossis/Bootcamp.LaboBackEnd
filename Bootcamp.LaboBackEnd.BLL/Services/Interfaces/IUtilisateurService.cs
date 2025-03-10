@@ -7,4 +7,5 @@ public interface IUtilisateurService
     bool Register(Utilisateur utilisateur);
     Utilisateur Login(string email, string password);
     IEnumerable<Commande> historiqueCommandesByUtilisteurId(Guid utilisateurId);
+    Utilisateur Update(Guid id, Utilisateur utilisateur);
 }

@@ -1,8 +1,10 @@
 ﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+using Bootcamp.LaboBackEnd.Domain;
 using Bootcamp.LaboBackEnd.DTOs.Commande;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
 using Bootcamp.LaboBackEnd.DTOs.Utilisateur;
 using Bootcamp.LaboBackEnd.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -68,6 +70,20 @@ namespace Bootcamp.LaboBackEnd.Controllers
             if (!commandes.Any()) return Ok("Aucune commande n'existe pour cet utilisateur.");
 
             return Ok(commandes);
+        }
+
+        [Authorize]
+        [HttpPut("update/{id}")]
+        public IActionResult Update([FromRoute] Guid id,[FromBody] UpdateFormUtilisateurDTO dto)
+        {
+            if (User.FindFirst(ClaimTypes.Sid)?.Value != id.ToString()) return Unauthorized();
+
+            if (!ModelState.IsValid) return BadRequest("Elements non valides.");
+
+            dto.Id = Guid.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+            ConnectedUtilisateurDTO u = _utilisateurService.Update(id, dto.ToUpdateEntity()).ToDTO();
+
+            return Ok(u);
         }
     }
 }

@@ -43,4 +43,9 @@ public class UtilisateurService : IUtilisateurService
     {
         return _utilisateurRepository.HistoriqueCommandesByUtilisteurId(utilisateurId);
     }
+
+    public Utilisateur Update(Guid id, Utilisateur utilisateur)
+    {
+        return _utilisateurRepository.Update(id, utilisateur);
+    }
 }
