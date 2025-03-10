@@ -73,15 +73,13 @@ namespace Bootcamp.LaboBackEnd.Controllers
         }
 
         [Authorize]
-        [HttpPut("update/{id}")]
-        public IActionResult Update([FromRoute] Guid id,[FromBody] UpdateFormUtilisateurDTO dto)
+        [HttpPut("update")]
+        public IActionResult Update([FromBody] UpdateFormUtilisateurDTO dto)
         {
-            if (User.FindFirst(ClaimTypes.Sid)?.Value != id.ToString()) return Unauthorized();
-
             if (!ModelState.IsValid) return BadRequest("Elements non valides.");
 
             dto.Id = Guid.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
-            ConnectedUtilisateurDTO u = _utilisateurService.Update(id, dto.ToUpdateEntity()).ToDTO();
+            ConnectedUtilisateurDTO u = _utilisateurService.Update(dto.Id, dto.ToUpdateEntity()).ToDTO();
 
             return Ok(u);
         }
