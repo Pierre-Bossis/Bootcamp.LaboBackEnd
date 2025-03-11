@@ -1,4 +1,5 @@
-﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
+using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
 
@@ -15,16 +16,37 @@ public class CommandeService : ICommandeService
 
     public bool CreateCommande(Guid utilisateurId, IEnumerable<Commande_Produit> produits)
     {
-        return _repository.CreateCommande(utilisateurId, produits);
+        try
+        {
+            return _repository.CreateCommande(utilisateurId, produits);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException(ex.Message, ex);
+        }
     }
 
     public IEnumerable<Commande> GetAllCommandes()
     {
-        return _repository.GetAllCommandes();
+        try
+        {
+            return _repository.GetAllCommandes();
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException(ex.Message, ex);
+        }
     }
 
     public Commande UpdateStateCommande(int id, int stateId)
     {
-        return _repository.UpdateStateCommande(id, stateId);
+        try
+        {
+            return _repository.UpdateStateCommande(id, stateId);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException(ex.Message, ex);
+        }
     }
 }

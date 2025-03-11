@@ -2,7 +2,6 @@
 using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
-using Microsoft.Data.SqlClient;
 
 namespace Bootcamp.LaboBackEnd.BLL.Services;
 
@@ -20,13 +19,9 @@ public class ProduitService : IProduitService
         try
         {
             bool produitNameExists = _Repository.IsProduitNameExists(produit.Nom);
-            if (produitNameExists) throw new EmailAlreadyExistsException();
+            if (produitNameExists) throw new NameCategorieAlreadyExistsException();
 
             return _Repository.AddProduit(produit);
-        }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
         }
         catch (Exception ex)
         {
@@ -40,10 +35,6 @@ public class ProduitService : IProduitService
         {
             return _Repository.DeleteProduit(id);
         }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
-        }
         catch (Exception ex)
         {
             throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
@@ -55,10 +46,6 @@ public class ProduitService : IProduitService
         try
         {
             return _Repository.GetAllProduits();
-        }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
         }
         catch (Exception ex)
         {
@@ -72,10 +59,6 @@ public class ProduitService : IProduitService
         {
             return _Repository.GetProduitById(id);
         }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
-        }
         catch (Exception ex)
         {
             throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
@@ -88,10 +71,6 @@ public class ProduitService : IProduitService
         {
             return _Repository.GetProduitsByCategorieId(categorieId);
         }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
-        }
         catch (Exception ex)
         {
             throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
@@ -102,10 +81,6 @@ public class ProduitService : IProduitService
         try
         {
             return _Repository.GetProduitsByCategorieName(nom);
-        }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
         }
         catch (Exception ex)
         {
@@ -118,10 +93,6 @@ public class ProduitService : IProduitService
         try
         {
             return _Repository.UpdateProduit(id, produit);
-        }
-        catch (SqlException ex)
-        {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
         }
         catch (Exception ex)
         {

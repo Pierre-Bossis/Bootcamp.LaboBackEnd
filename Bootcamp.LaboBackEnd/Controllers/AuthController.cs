@@ -45,8 +45,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Elements non valides.");
 
-            bool success = _utilisateurService.Register(utilisateur.ToEntity());
-            if (!success) return BadRequest("Email déjà utilisé ou Erreur lors de la création.");
+            _utilisateurService.Register(utilisateur.ToEntity());
 
             return Ok("Compte créé avec succès.");
         }

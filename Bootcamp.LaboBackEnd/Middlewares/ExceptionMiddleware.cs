@@ -25,12 +25,12 @@ public class ExceptionMiddleware
             int statusCode = 0;
             switch (ex)
             {
-                case NameCategorieAlreadyExistsException:
                 case InvalidLoginException:
                 case BusinessException:
                     context.Response.StatusCode = 400;
                     _logger.LogError(ex, "An unexpected 'Generic' error occurred for request {RequestPath}", context.Request.Path);
                     break;
+                case NameCategorieAlreadyExistsException:
                 case EmailAlreadyExistsException:
                     context.Response.StatusCode = 409;
                     _logger.LogError(ex, "An unexpected Duplicate value occurred for request {RequestPath}", context.Request.Path);

@@ -16,7 +16,7 @@ public interface IProduitService
     /// <returns></returns>
     Produit? GetProduitById(int id);
     /// <summary>
-    /// Ajouter un produit ou retourne null si le nom existe déjà.
+    /// Ajouter un produit.
     /// </summary>
     /// <param name="produit"></param>
     /// <returns></returns>

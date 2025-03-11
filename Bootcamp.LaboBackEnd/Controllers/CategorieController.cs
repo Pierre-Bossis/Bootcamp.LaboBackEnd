@@ -52,8 +52,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Elements non valides.");
 
-            Categorie? categorie = _Service.AddCategorie(dto.Nom);
-            if (categorie is null) return Conflict("La catégorie existe déjà.");
+            Categorie categorie = _Service.AddCategorie(dto.Nom);
             CategorieDTO categorieDTO = categorie.ToDTO();
 
             return Ok(categorieDTO);

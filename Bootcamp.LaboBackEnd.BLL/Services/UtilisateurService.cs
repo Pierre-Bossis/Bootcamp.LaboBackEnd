@@ -15,15 +15,15 @@ public class UtilisateurService : IUtilisateurService
         _utilisateurRepository = utilisateurRepository;
     }
 
-    public bool Register(Utilisateur utilisateur)
+    public void Register(Utilisateur utilisateur)
     {
         bool emailExists = _utilisateurRepository.IsEmailAlreadyExists(utilisateur.Email);
-        //if (emailExists) throw new EmailAlreadyExistsException();
-        if (emailExists) return false;
+        if (emailExists) throw new EmailAlreadyExistsException();
 
         utilisateur.PasswordHash = Argon2.Hash(utilisateur.PasswordHash);
 
-        return _utilisateurRepository.Register(utilisateur);
+        bool success = _utilisateurRepository.Register(utilisateur);
+        if (!success) throw new BusinessException("Erreur inattendue lors de la création.");
     }
 
     public Utilisateur? Login(string email, string password)
@@ -41,11 +41,25 @@ public class UtilisateurService : IUtilisateurService
 
     public IEnumerable<Commande> historiqueCommandesByUtilisteurId(Guid utilisateurId)
     {
-        return _utilisateurRepository.HistoriqueCommandesByUtilisteurId(utilisateurId);
+        try
+        {
+            return _utilisateurRepository.HistoriqueCommandesByUtilisteurId(utilisateurId);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException(ex.Message, ex);
+        }
     }
 
     public Utilisateur Update(Guid id, Utilisateur utilisateur)
     {
+        try
+        {
         return _utilisateurRepository.Update(id, utilisateur);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException(ex.Message, ex);
+        }
     }
 }

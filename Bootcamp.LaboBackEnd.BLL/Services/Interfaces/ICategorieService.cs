@@ -7,5 +7,5 @@ public  interface ICategorieService
     IEnumerable<Categorie> GetAllCategories();
     Categorie GetCategorieById(int id);
     Categorie GetCategorieByName(string name);
-    Categorie? AddCategorie(string categorie);
+    Categorie AddCategorie(string categorie);
 }
