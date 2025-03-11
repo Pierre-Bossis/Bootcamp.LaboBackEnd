@@ -15,52 +15,117 @@ public class ProduitService : IProduitService
         _Repository = produitRepository;
     }
 
-    public Produit? AddProduit(Produit produit)
+    public Produit AddProduit(Produit produit)
     {
         try
         {
             bool produitNameExists = _Repository.IsProduitNameExists(produit.Nom);
-            if (produitNameExists) return null;
+            if (produitNameExists) throw new EmailAlreadyExistsException();
 
             return _Repository.AddProduit(produit);
         }
         catch (SqlException ex)
         {
-            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}",ex);
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
         }
         catch (Exception ex)
         {
-            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}",ex);
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
         }
     }
 
     public bool DeleteProduit(int id)
     {
-        return _Repository.DeleteProduit(id);
+        try
+        {
+            return _Repository.DeleteProduit(id);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
 
     public IEnumerable<Produit> GetAllProduits()
     {
-        throw new Exception();
-        return _Repository.GetAllProduits();
+        try
+        {
+            return _Repository.GetAllProduits();
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
 
     public Produit? GetProduitById(int id)
     {
-        return _Repository.GetProduitById(id);
+        try
+        {
+            return _Repository.GetProduitById(id);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
 
     public IEnumerable<Produit> GetProduitsByCategorieId(int categorieId)
     {
-        return _Repository.GetProduitsByCategorieId(categorieId);
+        try
+        {
+            return _Repository.GetProduitsByCategorieId(categorieId);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
     public IEnumerable<Produit> GetProduitsByCategorieName(string nom)
     {
-        return _Repository.GetProduitsByCategorieName(nom);
+        try
+        {
+            return _Repository.GetProduitsByCategorieName(nom);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
 
     public Produit UpdateProduit(int id, Produit produit)
     {
-        return _Repository.UpdateProduit(id, produit);
+        try
+        {
+            return _Repository.UpdateProduit(id, produit);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}", ex);
+        }
     }
 }

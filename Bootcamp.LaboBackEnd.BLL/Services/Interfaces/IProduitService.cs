@@ -20,7 +20,7 @@ public interface IProduitService
     /// </summary>
     /// <param name="produit"></param>
     /// <returns></returns>
-    Produit? AddProduit(Produit produit);
+    Produit AddProduit(Produit produit);
     /// <summary>
     /// Mettre à jour un produit.
     /// </summary>

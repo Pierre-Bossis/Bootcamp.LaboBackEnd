@@ -30,7 +30,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             if (categorieDTO is null) return BadRequest("La catégorie n'existe pas.");
 
             //créé le produit et retourne l'entitée créée avec les informations complètes de la catégorie
-            Produit? produit = _produitService.AddProduit(dto.ToEntity());
+            Produit produit = _produitService.AddProduit(dto.ToEntity());
             if (produit is null) return Conflict("Le nom du produit est déjà utilisé.");
             ProduitDTO createdProduct = produit.ToDtoFull();
 
