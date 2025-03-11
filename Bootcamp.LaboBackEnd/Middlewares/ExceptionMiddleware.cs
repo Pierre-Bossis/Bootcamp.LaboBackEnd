@@ -28,20 +28,20 @@ public class ExceptionMiddleware
                 case InvalidLoginException:
                 case BusinessException:
                     context.Response.StatusCode = 400;
-                    _logger.LogError(ex, "An unexpected 'Generic' error occurred for request {RequestPath}", context.Request.Path);
+                    //_logger.LogError(ex, "An unexpected 'Generic' error occurred for request {RequestPath}", context.Request.Path);
                     break;
                 case NameCategorieAlreadyExistsException:
                 case EmailAlreadyExistsException:
                     context.Response.StatusCode = 409;
-                    _logger.LogError(ex, "An unexpected Duplicate value occurred for request {RequestPath}", context.Request.Path);
+                    //_logger.LogError(ex, "An unexpected Duplicate value occurred for request {RequestPath}", context.Request.Path);
                     break;
                 case UtilisateurNotFoundException:
                     context.Response.StatusCode = 404;
-                    _logger.LogError(ex, "An unexpected Not found error occurred for request {RequestPath}", context.Request.Path);
+                    //_logger.LogError(ex, "An unexpected Not found error occurred for request {RequestPath}", context.Request.Path);
                     break;
                 default:
                     context.Response.StatusCode = 500;
-                    _logger.LogError(ex, "An unexpected Server error occurred for request {RequestPath}", context.Request.Path);
+                    //_logger.LogError(ex, "An unexpected Server error occurred for request {RequestPath}", context.Request.Path);
                     break;
             }
 
