@@ -19,7 +19,7 @@ public class ProduitRepository : IProduitRepository
         {
             connection.Open();
 
-            using(SqlCommand cmd =  connection.CreateCommand())
+            using (SqlCommand cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT COUNT(*) FROM Produits WHERE Nom = @Nom";
                 cmd.Parameters.AddWithValue("@Nom", name);
@@ -82,7 +82,7 @@ public class ProduitRepository : IProduitRepository
         using (SqlConnection connection = new(_connection.ConnectionString))
         {
             connection.Open();
-            ICollection<Produit> produits = new List<Produit>();
+            List<Produit> produits = new List<Produit>();
 
             using (SqlCommand cmd = connection.CreateCommand())
             {

@@ -1,6 +1,8 @@
-﻿using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
+﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
+using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
 using Bootcamp.LaboBackEnd.Domain;
+using Microsoft.Data.SqlClient;
 
 namespace Bootcamp.LaboBackEnd.BLL.Services;
 
@@ -15,10 +17,21 @@ public class ProduitService : IProduitService
 
     public Produit? AddProduit(Produit produit)
     {
-        bool produitNameExists = _Repository.IsProduitNameExists(produit.Nom);
-        if (produitNameExists) return null;
+        try
+        {
+            bool produitNameExists = _Repository.IsProduitNameExists(produit.Nom);
+            if (produitNameExists) return null;
 
-        return _Repository.AddProduit(produit);
+            return _Repository.AddProduit(produit);
+        }
+        catch (SqlException ex)
+        {
+            throw new DatabaseException($"Une erreure SQL est survenue: {ex.Message}",ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BusinessException($"Une Exception inconnue est survenue: {ex.Message}",ex);
+        }
     }
 
     public bool DeleteProduit(int id)
@@ -28,6 +41,7 @@ public class ProduitService : IProduitService
 
     public IEnumerable<Produit> GetAllProduits()
     {
+        throw new Exception();
         return _Repository.GetAllProduits();
     }
 
