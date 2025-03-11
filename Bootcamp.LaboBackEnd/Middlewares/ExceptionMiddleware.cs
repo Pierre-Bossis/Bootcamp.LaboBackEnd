@@ -1,5 +1,4 @@
 ﻿using Bootcamp.LaboBackEnd.BLL.CustomExceptions;
-using System.Security.Claims;
 
 namespace Bootcamp.LaboBackEnd.Middlewares;
 
@@ -52,15 +51,19 @@ public class ExceptionMiddleware
             if (!Directory.Exists(logDirectory)) Directory.CreateDirectory(logDirectory);
             string logFilePath = Path.Combine(logDirectory, "app-logs.txt");
 
-            string logMessage = $"{DateTime.Now} - Error {context.Response.StatusCode} - Exception: {ex.Message}\n" +
+            string logMessage = $"[{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}] - ERROR {context.Response.StatusCode} - Exception: {ex.Message}\n" +
+                    $"Exception Type: {ex.GetType().FullName}\n" +
                     $"StackTrace: {ex.StackTrace}\n" +
                     $"Request Path: {context.Request.Path}\n" +
                     $"HTTP Method: {context.Request.Method}\n" +
+                    $"Request ID: {context.TraceIdentifier}\n" +
                     /*$"User ID: {User.FindFirst(ClaimTypes.Sid)?.Value}\n" +*/
+                    $"Environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Unknown"}\n" +
                     $"Machine: {Environment.MachineName}\n" +
                     "-----------------------------------------\n" +
                     "\n\n";
             File.AppendAllText(logFilePath, logMessage);
+
             #endregion
 
             await context.Response.WriteAsync(responseMessage);
