@@ -1,4 +1,4 @@
-using Bootcamp.LaboBackEnd.BLL.Services;
+﻿using Bootcamp.LaboBackEnd.BLL.Services;
 using Bootcamp.LaboBackEnd.BLL.Services.Interfaces;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories;
 using Bootcamp.LaboBackEnd.DAL.DataAccess.Repositories.Interfaces;
@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 #region Dependency Injection
 
 //builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("Technofutur")));
+builder.Services.AddTransient<SqlConnection>(sp => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
 builder.Services.AddScoped<IUtilisateurService, UtilisateurService>();
 
@@ -62,6 +62,19 @@ builder.Services.AddAuthorization(options =>
 
 #endregion
 
+#region Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Front",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+#endregion
+
 var app = builder.Build();
 
 
@@ -80,5 +93,6 @@ app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
+app.UseCors("Front");
 
 app.Run();
