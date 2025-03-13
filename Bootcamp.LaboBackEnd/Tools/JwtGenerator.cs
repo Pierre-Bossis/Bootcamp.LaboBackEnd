@@ -35,7 +35,7 @@ public class JwtGenerator
         JwtSecurityToken jwt = new JwtSecurityToken(
                 claims: myClaims,
                 signingCredentials: signingKey,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(7),
                 issuer: "https://localhost:7155",   // Ajout de l'issuer
                 audience: "http://localhost:4200"
             );
