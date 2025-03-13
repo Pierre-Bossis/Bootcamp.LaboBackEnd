@@ -86,7 +86,9 @@ public class ProduitRepository : IProduitRepository
 
             using (SqlCommand cmd = connection.CreateCommand())
             {
-                cmd.CommandText = "SELECT Id, Nom, Description, Prix, Quantite, CategorieId FROM Produits";
+                cmd.CommandText = "SELECT p.Id, p.Nom, p.Description, p.Prix, p.Quantite, p.CategorieId, c.Nom AS CategorieNom " +
+                  "FROM Produits p " +
+                  "JOIN Categories c ON p.CategorieId = c.Id";
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -99,7 +101,12 @@ public class ProduitRepository : IProduitRepository
                             Description = reader.GetString(2),
                             Prix = reader.GetDecimal(3),
                             Quantite = reader.GetInt32(4),
-                            CategorieId = reader.GetInt32(5)
+                            CategorieId = reader.GetInt32(5),
+                            Categorie = new()
+                            {
+                                Id = reader.GetInt32(5),
+                                Nom = reader.GetString(6)
+                            }
                         });
                     }
                 }

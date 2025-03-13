@@ -3,6 +3,7 @@ using Bootcamp.LaboBackEnd.Domain;
 using Bootcamp.LaboBackEnd.DTOs.Categorie;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
 using Bootcamp.LaboBackEnd.DTOs.Produit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bootcamp.LaboBackEnd.Controllers
@@ -19,7 +20,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             _produitService = produitService;
             _categorieService = categorieService;
         }
-
+        [Authorize(Policy = "adminPolicy")]
         [HttpPost("create-product")]
         public IActionResult CreateProduct([FromBody] CreateFormProduitDTO dto)
         {
@@ -79,6 +80,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(produitDTO);
         }
 
+        [Authorize(Policy = "adminPolicy")]
         [HttpDelete("delete/{id}")]
         public IActionResult DeleteProduct([FromRoute] int id)
         {
@@ -89,6 +91,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok("Produit supprimé avec succès");
         }
 
+        [Authorize(Policy = "adminPolicy")]
         [HttpPut("update/{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateFormProduitDTO form)
         {
