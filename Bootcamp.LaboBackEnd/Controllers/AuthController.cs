@@ -62,16 +62,17 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(token);
         }
 
-        [HttpGet("getcommandes/{utilisateurId}")]
-        public IActionResult historiqueCommandesByUtilisteurId(Guid utilisateurId)
+        [Authorize(Policy = "connectedPolicy")]
+        [HttpGet("getcommandes")]
+        public IActionResult historiqueCommandesByUtilisteurId()
         {
-            IEnumerable<GetCommandeDTO> commandes = _utilisateurService.historiqueCommandesByUtilisteurId(utilisateurId).Select(c => c.ToCommandeDTO());
-            if (!commandes.Any()) return Ok("Aucune commande n'existe pour cet utilisateur.");
+            Guid id = Guid.Parse(User.FindFirst(ClaimTypes.Sid)?.Value);
+            IEnumerable<GetCommandeDTO> commandes = _utilisateurService.historiqueCommandesByUtilisteurId(id).Select(c => c.ToCommandeDTO());
 
             return Ok(commandes);
         }
 
-        [Authorize]
+        [Authorize(Policy = "connectedPolicy")]
         [HttpPut("update")]
         public IActionResult Update([FromBody] UpdateFormUtilisateurDTO dto)
         {
