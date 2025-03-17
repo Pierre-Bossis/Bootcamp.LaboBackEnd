@@ -2,6 +2,7 @@
 using Bootcamp.LaboBackEnd.Domain;
 using Bootcamp.LaboBackEnd.DTOs.Commande;
 using Bootcamp.LaboBackEnd.DTOs.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -19,6 +20,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             _commandeService = commandeService;
         }
 
+        [Authorize(Policy = "adminPolicy")]
         [HttpGet]
         public IActionResult GetAllCommandes()
         {
@@ -28,6 +30,7 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(commandes);
         }
 
+        [Authorize(Policy = "connectedPolicy")]
         [HttpPost("create-commande")]
         public IActionResult CreateCommande(IEnumerable<Commande_Produit> commande_produit)
         {
@@ -41,8 +44,9 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok("Commande passée.");
         }
 
+        [Authorize(Policy = "adminPolicy")]
         [HttpPut("update-state/{id}")]
-        public IActionResult updateState([FromRoute] int id, [FromBody] int stateId)
+        public IActionResult updateState([FromRoute]int id, [FromQuery]int stateId)
         {
             GetSummaryCommandeDto dto = _commandeService.UpdateStateCommande(id, stateId).ToSummaryCommandeDTO();
 
