@@ -8,7 +8,6 @@ using System.Security.Claims;
 
 namespace Bootcamp.LaboBackEnd.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CommandeController : ControllerBase

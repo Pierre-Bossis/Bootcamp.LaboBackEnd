@@ -214,9 +214,9 @@ public class ProduitRepository : IProduitRepository
                        c.Nom AS CategorieNom 
                 FROM Produits p
                 INNER JOIN Categories c ON p.CategorieId = c.Id
-                WHERE c.Nom = @Nom";
+                WHERE c.Nom LIKE @Nom";
 
-                cmd.Parameters.AddWithValue("@Nom", nom);
+                cmd.Parameters.AddWithValue("@Nom", "%" + nom + "%");
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {

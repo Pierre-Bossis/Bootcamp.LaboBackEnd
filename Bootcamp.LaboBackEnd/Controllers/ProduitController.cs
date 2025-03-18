@@ -51,7 +51,6 @@ namespace Bootcamp.LaboBackEnd.Controllers
         public IActionResult GetByCategorieName([FromRoute] string nom)
         {
             IEnumerable<ListProduitDTO> produits = _produitService.GetProduitsByCategorieName(nom).Select(p => p.ToListDTO());
-            if (!produits.Any()) return NotFound("Aucun produits trouvé.");
 
             return Ok(produits);
         }
