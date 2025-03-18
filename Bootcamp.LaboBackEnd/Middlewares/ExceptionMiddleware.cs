@@ -36,6 +36,7 @@ public class ExceptionMiddleware
                     //_logger.LogError(ex, "An unexpected Duplicate value occurred for request {RequestPath}", context.Request.Path);
                     break;
                 case UtilisateurNotFoundException:
+                case NotFoundCommandeException:
                     context.Response.StatusCode = 404;
                     //_logger.LogError(ex, "An unexpected Not found error occurred for request {RequestPath}", context.Request.Path);
                     break;
