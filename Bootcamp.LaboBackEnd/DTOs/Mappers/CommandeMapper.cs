@@ -12,7 +12,7 @@ public static class CommandeMapper
             Date = commande.Date,
             EtatId = commande.EtatId,
             UtilisateurId = commande.UtilisateurId,
-            Produits = commande.Produits.Select(p => p.ToListDTO())
+            Produits = commande.Produits.Select(p => p.ToDtoFull())
         };
     }
 

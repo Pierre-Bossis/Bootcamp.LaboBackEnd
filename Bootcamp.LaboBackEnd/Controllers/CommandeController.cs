@@ -55,6 +55,15 @@ namespace Bootcamp.LaboBackEnd.Controllers
             return Ok(dto);
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetCommandeById([FromRoute]int id)
+        {
+            GetCommandeDTO dto = _commandeService.GetCommandeById(id).ToCommandeDTO();
+
+            return Ok(dto);
+        }
+
         private Guid? GetCurrentUserId()
         {
             if (User.Identity.IsAuthenticated)

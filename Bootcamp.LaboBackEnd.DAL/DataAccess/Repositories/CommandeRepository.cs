@@ -127,6 +127,76 @@ public class CommandeRepository : ICommandeRepository
             }
         }
     }
+
+    public Commande? GetCommandeById(int id)
+    {
+        using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+        {
+            connection.Open();
+
+            using (SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = @"
+            SELECT 
+                c.Id AS CommandeId, 
+                c.EtatId, 
+                c.UtilisateurId, 
+                c.Date, 
+                p.Id AS ProduitId, 
+                p.Nom AS ProduitNom, 
+                p.Prix, 
+                cp.Quantite, 
+                cat.Id AS CategorieId, 
+                cat.Nom AS CategorieNom
+            FROM Commandes c
+            LEFT JOIN Commandes_Produits cp ON c.Id = cp.CommandeId
+            LEFT JOIN Produits p ON cp.ProduitId = p.Id
+            LEFT JOIN Categories cat ON p.CategorieId = cat.Id
+            WHERE c.Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    Commande? commande = null;
+
+                    while (reader.Read())
+                    {
+                        if (commande == null)
+                        {
+                            commande = new Commande
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CommandeId")),
+                                EtatId = reader.GetInt32(reader.GetOrdinal("EtatId")),
+                                UtilisateurId = reader.GetGuid(reader.GetOrdinal("UtilisateurId")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                                Produits = new List<Produit>()
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("ProduitId")))
+                        {
+                            Produit produit = new Produit
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ProduitId")),
+                                Nom = reader.GetString(reader.GetOrdinal("ProduitNom")),
+                                Prix = reader.GetDecimal(reader.GetOrdinal("Prix")),
+                                Quantite = reader.GetInt32(reader.GetOrdinal("Quantite")),
+                                Categorie = new Categorie
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CategorieId")),
+                                    Nom = reader.GetString(reader.GetOrdinal("CategorieNom"))
+                                }
+                            };
+
+                            commande.Produits.Add(produit);
+                        }
+                    }
+                    return commande;
+                }
+            }
+        }
+    }
+
     public Commande UpdateStateCommande(int id, int stateId)
     {
         using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))

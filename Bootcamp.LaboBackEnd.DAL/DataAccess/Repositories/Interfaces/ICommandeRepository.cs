@@ -23,4 +23,10 @@ public interface ICommandeRepository
     /// <param name="stateId"></param>
     /// <returns></returns>
     Commande UpdateStateCommande(int id, int stateId);
+    /// <summary>
+    /// Récupérer une commande par son Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Commande? GetCommandeById(int id);
 }

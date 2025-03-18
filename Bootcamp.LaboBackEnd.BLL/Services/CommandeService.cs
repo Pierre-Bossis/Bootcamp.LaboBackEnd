@@ -38,6 +38,14 @@ public class CommandeService : ICommandeService
         }
     }
 
+    public Commande? GetCommandeById(int id)
+    {
+        Commande? commande = _repository.GetCommandeById(id);
+        if (commande is null) throw new NotFoundCommandeException();
+
+        return commande;
+    }
+
     public Commande UpdateStateCommande(int id, int stateId)
     {
         try
