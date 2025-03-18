@@ -143,7 +143,8 @@ public class CommandeRepository : ICommandeRepository
                 c.UtilisateurId, 
                 c.Date, 
                 p.Id AS ProduitId, 
-                p.Nom AS ProduitNom, 
+                p.Nom AS ProduitNom,
+                p.Description AS ProduitDescription,
                 p.Prix, 
                 cp.Quantite, 
                 cat.Id AS CategorieId, 
@@ -180,6 +181,7 @@ public class CommandeRepository : ICommandeRepository
                                 Id = reader.GetInt32(reader.GetOrdinal("ProduitId")),
                                 Nom = reader.GetString(reader.GetOrdinal("ProduitNom")),
                                 Prix = reader.GetDecimal(reader.GetOrdinal("Prix")),
+                                Description = reader.GetString(reader.GetOrdinal("ProduitDescription")),
                                 Quantite = reader.GetInt32(reader.GetOrdinal("Quantite")),
                                 Categorie = new Categorie
                                 {
